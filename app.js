@@ -1,27 +1,20 @@
-// 1. Cambiar entre las 4 pestañas de la aplicación
+// ==========================================
+// 1. NAVEGACIÓN ENTRE PESTAÑAS
+// ==========================================
 function cambiarPestana(idPestana, botonPulsado) {
-  // Ocultar todas las secciones
-  const secciones = document.querySelectorAll('.tab-content');
-  secciones.forEach(sec => sec.classList.remove('active'));
-
-  // Desactivar todos los botones del menú
-  const botones = document.querySelectorAll('.nav-btn');
-  botones.forEach(btn => btn.classList.remove('active'));
-
-  // Mostrar la sección elegida y marcar el botón en rojo
+  document.querySelectorAll('.tab-content').forEach(sec => sec.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
   document.getElementById(idPestana).classList.add('active');
   botonPulsado.classList.add('active');
 }
 
-// 2. Calcular los días restantes hasta tus metas
+// ==========================================
+// 2. CONTADORES Y CALENDARIO
+// ==========================================
 function actualizarContadores() {
   const hoy = new Date();
-
-  // Meta 1: 18 años (17 de noviembre de 2027)
   const fecha18 = new Date('2027-11-17T00:00:00');
-  // Meta 2: Carnet de conducir (estimado 1 de enero de 2028)
   const fechaCarnet = new Date('2028-01-01T00:00:00');
-  // Meta 3: Verano de 2028 - Pruebas (1 de junio de 2028)
   const fechaOpos = new Date('2028-06-01T00:00:00');
 
   document.getElementById('dias-18').innerText = calcularDias(hoy, fecha18);
@@ -35,7 +28,6 @@ function calcularDias(fechaActual, fechaObjetivo) {
   return dias > 0 ? dias : 0;
 }
 
-// 3. Guardar y mostrar tus propios exámenes o recordatorios
 let misEventos = JSON.parse(localStorage.getItem('eventosGuardados')) || [];
 
 function mostrarEventos() {
@@ -60,15 +52,10 @@ function mostrarEventos() {
 function agregarEvento() {
   const titulo = document.getElementById('evento-titulo').value;
   const fecha = document.getElementById('evento-fecha').value;
-
-  if (!titulo || !fecha) {
-    alert('Escribe un nombre y selecciona una fecha.');
-    return;
-  }
+  if (!titulo || !fecha) return alert('Escribe un nombre y selecciona una fecha.');
 
   misEventos.push({ titulo, fecha });
   localStorage.setItem('eventosGuardados', JSON.stringify(misEventos));
-  
   document.getElementById('evento-titulo').value = '';
   document.getElementById('evento-fecha').value = '';
   mostrarEventos();
@@ -80,171 +67,37 @@ function borrarEvento(index) {
   mostrarEventos();
 }
 
-// Iniciar todo al abrir la página
-actualizarContadores();
-mostrarEventos();
-
 // ==========================================
-// 4. MÓDULO DE ENTRENAMIENTO (RUTINA HEVY)
+// 3. MÓDULO DE ENTRENAMIENTO (RUTINA HEVY)
 // ==========================================
-
-let filtroActual = 'Empuje'; // Empieza mostrando el día de Empuje
+let filtroActual = 'Empuje';
 
 const rutinaHevyPorDefecto = [
-  // DÍA 1: EMPUJE
-  {
-    categoria: 'Empuje',
-    nombre: 'Press de Banca Inclinado (Mancuerna)',
-    marca: '3 series · 8 reps · ⏱ 2min 0s',
-    nota: 'Baja lentamente las mancuernas tanto como puedas hacia tus lados para sentir un buen estiramiento en la parte superior del pecho.',
-    completado: false
-  },
-  {
-    categoria: 'Empuje',
-    nombre: 'Aperturas (Mancuerna)',
-    marca: '3 series · 8 reps · ⏱ 1min 45s',
-    nota: '',
-    completado: false
-  },
-  {
-    categoria: 'Empuje',
-    nombre: 'Elevación Lateral (Mancuerna)',
-    marca: '3 series · 8 reps · ⏱ 1min 45s',
-    nota: 'Mantén el movimiento lento y controlado; evita usar el impulso, especialmente cuando tus hombros comiencen a arder.',
-    completado: false
-  },
-  {
-    categoria: 'Empuje',
-    nombre: 'Press de Banca (Barra)',
-    marca: '3 series · 8 reps · ⏱ 2min 30s',
-    nota: 'Controla la barra al bajar y toca la parte inferior del pecho. Haz una pausa breve y presiona sin rebotar.',
-    completado: false
-  },
-  {
-    categoria: 'Empuje',
-    nombre: 'Press de Hombros Sentado (Máquina)',
-    marca: '3 series · 8 reps · ⏱ 2min 0s',
-    nota: 'Mantén abdominales comprometidos y baja las manijas hasta que tus codos estén ligeramente por debajo del nivel de los hombros.',
-    completado: false
-  },
-  {
-    categoria: 'Empuje',
-    nombre: 'Jalón de tríceps con cuerda',
-    marca: '3 series · 8 reps · ⏱ 1min 30s',
-    nota: 'Extiende tus brazos completamente en cada repetición y dóblalos lentamente durante la parte negativa.',
-    completado: false
-  },
-
-  // DÍA 2: TIRÓN
-  {
-    categoria: 'Tirón',
-    nombre: 'Encogimiento de Hombros (Mancuerna)',
-    marca: '3 series · 8 reps · ⏱ 2min 0s',
-    nota: 'Encoge los hombros hacia arriba en un solo movimiento fluido y haz una breve pausa en la posición superior.',
-    completado: false
-  },
-  {
-    categoria: 'Tirón',
-    nombre: 'Curl de Bíceps (Mancuerna)',
-    marca: '3 series · 8 reps · ⏱ 1min 45s',
-    nota: '',
-    completado: false
-  },
-  {
-    categoria: 'Tirón',
-    nombre: 'Remo Inclinado (Barra)',
-    marca: '3 series · 8 reps · ⏱ 2min 30s',
-    nota: 'Baja lentamente el peso para sentir un estiramiento en la parte superior de la espalda. Tira en un movimiento fluido.',
-    completado: false
-  },
-  {
-    categoria: 'Tirón',
-    nombre: 'Remo Sentado con Cable - Agarre Recto',
-    marca: '3 series · 8 reps · ⏱ 2min 0s',
-    nota: '',
-    completado: false
-  },
-  {
-    categoria: 'Tirón',
-    nombre: 'Jalón al Pecho (Cable)',
-    marca: '3 series · 8 reps · ⏱ 2min 0s',
-    nota: 'Tira de la barra hacia tu pecho superior y extiende lentamente los brazos sintiendo el estiramiento en los dorsales.',
-    completado: false
-  },
-  {
-    categoria: 'Tirón',
-    nombre: 'Tirón a la Cara (Face Pull)',
-    marca: '3 series · 8 reps · ⏱ 1min 30s',
-    nota: 'Tira de la cuerda hacia tu cara activando la parte superior de la espalda y manteniendo la posición un momento.',
-    completado: false
-  },
-
-  // DÍA 3: PIERNAS
-  {
-    categoria: 'Piernas',
-    nombre: 'Sentadilla (Mancuerna)',
-    marca: '3 series · 8-10 reps · ⏱ 2min 30s',
-    nota: '',
-    completado: false
-  },
-  {
-    categoria: 'Piernas',
-    nombre: 'Press de Piernas (Prensa)',
-    marca: '3 series · 8 reps · ⏱ 2min 0s',
-    nota: '',
-    completado: false
-  },
-  {
-    categoria: 'Piernas',
-    nombre: 'Elevación de glúteos y femorales',
-    marca: '3 series · 8 reps · ⏱ 2min 0s',
-    nota: 'Sostén un disco o mancuerna si puedes hacer más de 15 reps con peso corporal. Entrena a RPE 8-9.',
-    completado: false
-  },
-  {
-    categoria: 'Piernas',
-    nombre: 'Curl de Piernas Acostado (Máquina)',
-    marca: '3 series · 8 reps · ⏱ 2min 0s',
-    nota: 'Extiende lentamente tus piernas sintiendo un estiramiento intenso en tus isquiotibiales.',
-    completado: false
-  },
-  {
-    categoria: 'Piernas',
-    nombre: 'Extensión de Pierna',
-    marca: '3 series · 8 reps · ⏱ 2min 0s',
-    nota: 'Haz las repeticiones lentamente y con buen control, especialmente al doblar las rodillas.',
-    completado: false
-  },
-  {
-    categoria: 'Piernas',
-    nombre: 'Elevación de Gemelos de Pie (Máquina)',
-    marca: '3 series · 8 reps · ⏱ 2min 0s',
-    nota: 'Baja lentamente los talones para un estiramiento intenso y haz una pausa breve en lugar de rebotar.',
-    completado: false
-  },
-
-  // PRUEBAS OFICIALES GUÀRDIA URBANA
-  {
-    categoria: 'Pruebas Oficiales',
-    nombre: 'Course Navette (Test de Leger)',
-    marca: 'Objetivo: Superar Palier 10-11',
-    nota: 'Prueba oficial de resistencia aeróbica de ida y vuelta en 20 metros al ritmo del pitido.',
-    completado: false
-  },
-  {
-    categoria: 'Pruebas Oficiales',
-    nombre: 'Circuito de Agilidad y Velocidad',
-    marca: 'Objetivo: < 9.5 segundos',
-    nota: 'Salida sentada en el suelo, paso por vallas y eslalon entre conos sin derribarlos.',
-    completado: false
-  },
-  {
-    categoria: 'Pruebas Oficiales',
-    nombre: 'Lanzamiento de Balón Medicinal / Dinamometría',
-    marca: 'Registrar mejor marca en metros / kg',
-    nota: 'Potencia de tren superior y fuerza de tracción.',
-    completado: false
-  }
+  // EMPUJE
+  { categoria: 'Empuje', nombre: 'Press de Banca Inclinado (Mancuerna)', marca: '3 series · 8 reps · ⏱ 2min 0s', nota: 'Baja lentamente las mancuernas hacia tus lados para sentir un buen estiramiento en la parte superior del pecho.', completado: false },
+  { categoria: 'Empuje', nombre: 'Aperturas (Mancuerna)', marca: '3 series · 8 reps · ⏱ 1min 45s', nota: '', completado: false },
+  { categoria: 'Empuje', nombre: 'Elevación Lateral (Mancuerna)', marca: '3 series · 8 reps · ⏱ 1min 45s', nota: 'Mantén el movimiento lento y controlado; evita usar el impulso.', completado: false },
+  { categoria: 'Empuje', nombre: 'Press de Banca (Barra)', marca: '3 series · 8 reps · ⏱ 2min 30s', nota: 'Controla la barra al bajar y toca la parte inferior del pecho. Haz una pausa breve sin rebotar.', completado: false },
+  { categoria: 'Empuje', nombre: 'Press de Hombros Sentado (Máquina)', marca: '3 series · 8 reps · ⏱ 2min 0s', nota: 'Mantén abdominales comprometidos y baja las manijas hasta que tus codos estén ligeramente bajo los hombros.', completado: false },
+  { categoria: 'Empuje', nombre: 'Jalón de tríceps con cuerda', marca: '3 series · 8 reps · ⏱ 1min 30s', nota: 'Extiende tus brazos completamente en cada repetición y dóblalos lentamente en la bajada.', completado: false },
+  // TIRÓN
+  { categoria: 'Tirón', nombre: 'Encogimiento de Hombros (Mancuerna)', marca: '3 series · 8 reps · ⏱ 2min 0s', nota: 'Encoge los hombros hacia arriba en un movimiento fluido y haz una breve pausa arriba.', completado: false },
+  { categoria: 'Tirón', nombre: 'Curl de Bíceps (Mancuerna)', marca: '3 series · 8 reps · ⏱ 1min 45s', nota: '', completado: false },
+  { categoria: 'Tirón', nombre: 'Remo Inclinado (Barra)', marca: '3 series · 8 reps · ⏱ 2min 30s', nota: 'Baja lentamente el peso para sentir un estiramiento en la espalda alta. Tira fluido.', completado: false },
+  { categoria: 'Tirón', nombre: 'Remo Sentado con Cable - Agarre Recto', marca: '3 series · 8 reps · ⏱ 2min 0s', nota: '', completado: false },
+  { categoria: 'Tirón', nombre: 'Jalón al Pecho (Cable)', marca: '3 series · 8 reps · ⏱ 2min 0s', nota: 'Tira de la barra hacia tu pecho superior y extiende lentamente los brazos.', completado: false },
+  { categoria: 'Tirón', nombre: 'Tirón a la Cara (Face Pull)', marca: '3 series · 8 reps · ⏱ 1min 30s', nota: 'Tira de la cuerda hacia tu cara activando la parte superior de la espalda.', completado: false },
+  // PIERNAS
+  { categoria: 'Piernas', nombre: 'Sentadilla (Mancuerna)', marca: '3 series · 8-10 reps · ⏱ 2min 30s', nota: '', completado: false },
+  { categoria: 'Piernas', nombre: 'Press de Piernas (Prensa)', marca: '3 series · 8 reps · ⏱ 2min 0s', nota: '', completado: false },
+  { categoria: 'Piernas', nombre: 'Elevación de glúteos y femorales', marca: '3 series · 8 reps · ⏱ 2min 0s', nota: 'Sostén un disco o mancuerna si haces más de 15 reps con tu peso. RPE 8-9.', completado: false },
+  { categoria: 'Piernas', nombre: 'Curl de Piernas Acostado (Máquina)', marca: '3 series · 8 reps · ⏱ 2min 0s', nota: 'Extiende lentamente tus piernas sintiendo el estiramiento en los isquiotibiales.', completado: false },
+  { categoria: 'Piernas', nombre: 'Extensión de Pierna', marca: '3 series · 8 reps · ⏱ 2min 0s', nota: 'Haz las repeticiones lentamente y con buen control.', completado: false },
+  { categoria: 'Piernas', nombre: 'Elevación de Gemelos de Pie (Máquina)', marca: '3 series · 8 reps · ⏱ 2min 0s', nota: 'Baja lentamente los talones y haz una pausa breve abajo sin rebotar.', completado: false },
+  // PRUEBAS OFICIALES
+  { categoria: 'Pruebas Oficiales', nombre: 'Course Navette (Test de Leger)', marca: 'Objetivo: Superar Palier 10-11', nota: 'Prueba oficial de resistencia aeróbica de ida y vuelta en 20 metros.', completado: false },
+  { categoria: 'Pruebas Oficiales', nombre: 'Circuito de Agilidad y Velocidad', marca: 'Objetivo: < 9.5 segundos', nota: 'Salida sentada en el suelo, paso por vallas y eslalon entre conos.', completado: false },
+  { categoria: 'Pruebas Oficiales', nombre: 'Balón Medicinal / Dinamometría', marca: 'Registrar mejor marca (m / kg)', nota: 'Potencia de tren superior y fuerza de tracción.', completado: false }
 ];
 
 let misEjercicios = JSON.parse(localStorage.getItem('entrenoHevyV2')) || rutinaHevyPorDefecto;
@@ -259,9 +112,7 @@ function mostrarEntreno() {
   contenedor.innerHTML = '';
 
   misEjercicios.forEach((ej, index) => {
-    if (filtroActual !== 'Todas' && ej.categoria !== filtroActual) {
-      return;
-    }
+    if (filtroActual !== 'Todas' && ej.categoria !== filtroActual) return;
 
     const card = document.createElement('div');
     card.className = `workout-card ${ej.completado ? 'completed' : ''}`;
@@ -297,15 +148,10 @@ function agregarEjercicio() {
   const categoria = document.getElementById('entreno-categoria').value;
   const nombre = document.getElementById('entreno-nombre').value;
   const marca = document.getElementById('entreno-marca').value;
-
-  if (!nombre || !marca) {
-    alert('Escribe el nombre del ejercicio y tu serie o marca.');
-    return;
-  }
+  if (!nombre || !marca) return alert('Escribe el nombre del ejercicio y tu serie o marca.');
 
   misEjercicios.push({ categoria, nombre, marca, nota: '', completado: false });
   guardarEntrenoLocal();
-
   document.getElementById('entreno-nombre').value = '';
   document.getElementById('entreno-marca').value = '';
   mostrarEntreno();
@@ -345,37 +191,127 @@ function reiniciarChecksEntreno() {
   mostrarEntreno();
 }
 
-mostrarEntreno();
-
 // ==========================================
-// 5. MÓDULO DE COMIDAS CON IA (GEMINI API)
+// 4. MÓDULO DE PIZARRA INTERACTIVA DE NOTAS
 // ==========================================
-
-let comidasHoy = JSON.parse(localStorage.getItem('comidasGuardadas')) || [];
-let metaCalorias = parseInt(localStorage.getItem('metaCalorias')) || 2200;
-let imagenBase64Actual = null;
-
-// Guardar tu clave de Gemini en el navegador de forma privada
-function configurarApiKey() {
-  const claveActual = localStorage.getItem('geminiApiKey') || '';
-  const nuevaClave = prompt('Pega aquí tu API Key gratuita de Google AI Studio (empieza por AIza...):', claveActual);
-  if (nuevaClave !== null) {
-    localStorage.setItem('geminiApiKey', nuevaClave.trim());
-    alert('✅ Clave de IA guardada en tu navegador.');
+const notasIniciales = [
+  {
+    id: 1,
+    tipo: 'texto',
+    contenido: '📌 Requisitos clave:\n- Cumplir 18 años (17/11/2027)\n- Título de Bachillerato\n- Carnet de conducir B\n- Superar pruebas físicas y temario en verano 2028',
+    x: 30,
+    y: 30,
+    w: 280,
+    h: 190
   }
+];
+
+let misNotas = JSON.parse(localStorage.getItem('pizarraNotas')) || notasIniciales;
+let zIndexMax = 10;
+
+function guardarPizarra() {
+  localStorage.setItem('pizarraNotas', JSON.stringify(misNotas));
 }
 
-function cambiarObjetivoCalorias() {
-  const nuevaMeta = prompt('¿Cuál es tu objetivo de calorías diarias (kcal)?', metaCalorias);
-  if (nuevaMeta && !isNaN(nuevaMeta)) {
-    metaCalorias = parseInt(nuevaMeta);
-    localStorage.setItem('metaCalorias', metaCalorias);
-    actualizarPanelNutricion();
-  }
+function renderizarPizarra() {
+  const lienzo = document.getElementById('lienzo-pizarra');
+  if (!lienzo) return;
+  lienzo.innerHTML = '';
+
+  misNotas.forEach((nota) => {
+    const div = document.createElement('div');
+    div.className = 'board-note';
+    div.style.left = nota.x + 'px';
+    div.style.top = nota.y + 'px';
+    div.style.width = nota.w + 'px';
+    div.style.height = nota.h + 'px';
+
+    let cuerpoHTML = '';
+    if (nota.tipo === 'texto') {
+      cuerpoHTML = `<textarea class="note-textarea" placeholder="Escribe tu nota aquí..." oninput="actualizarTextoNota(${nota.id}, this.value)">${nota.contenido}</textarea>`;
+    } else {
+      cuerpoHTML = `
+        <img src="${nota.imagen}" class="note-img" alt="Nota">
+        <input type="text" class="note-caption" placeholder="Pie de foto..." value="${nota.contenido || ''}" oninput="actualizarTextoNota(${nota.id}, this.value)">
+      `;
+    }
+
+    div.innerHTML = `
+      <div class="note-header">
+        <span class="note-grip">⠿ ARRASTRAR</span>
+        <button class="note-close" onclick="borrarNota(${nota.id})">×</button>
+      </div>
+      <div class="note-body">
+        ${cuerpoHTML}
+      </div>
+    `;
+
+    // Guardar nuevo tamaño si el usuario estira la esquina inferior derecha
+    div.addEventListener('mouseup', () => {
+      nota.w = div.offsetWidth;
+      nota.h = div.offsetHeight;
+      guardarPizarra();
+    });
+
+    hacerArrastrable(div, nota);
+    lienzo.appendChild(div);
+  });
 }
 
-// Mostrar y comprimir la foto seleccionada
-function previsualizarFoto(event) {
+function hacerArrastrable(elemento, notaObj) {
+  const cabecera = elemento.querySelector('.note-header');
+  let arrastrando = false;
+  let inicioX = 0, inicioY = 0;
+
+  cabecera.addEventListener('pointerdown', (e) => {
+    if (e.target.classList.contains('note-close')) return;
+    arrastrando = true;
+    zIndexMax++;
+    elemento.style.zIndex = zIndexMax;
+    inicioX = e.clientX - notaObj.x;
+    inicioY = e.clientY - notaObj.y;
+    cabecera.setPointerCapture(e.pointerId);
+  });
+
+  cabecera.addEventListener('pointermove', (e) => {
+    if (!arrastrando) return;
+    const lienzo = document.getElementById('lienzo-pizarra');
+    let nuevaX = e.clientX - inicioX;
+    let nuevaY = e.clientY - inicioY;
+
+    // Evitar que se salga por arriba o por la izquierda
+    nuevaX = Math.max(0, Math.min(nuevaX, lienzo.clientWidth - 80));
+    nuevaY = Math.max(0, Math.min(nuevaY, lienzo.clientHeight - 40));
+
+    notaObj.x = nuevaX;
+    notaObj.y = nuevaY;
+    elemento.style.left = nuevaX + 'px';
+    elemento.style.top = nuevaY + 'px';
+  });
+
+  cabecera.addEventListener('pointerup', () => {
+    if (arrastrando) {
+      arrastrando = false;
+      guardarPizarra();
+    }
+  });
+}
+
+function crearNotaTexto() {
+  misNotas.push({
+    id: Date.now(),
+    tipo: 'texto',
+    contenido: '',
+    x: 40 + (misNotas.length * 20) % 200,
+    y: 40 + (misNotas.length * 20) % 150,
+    w: 240,
+    h: 180
+  });
+  guardarPizarra();
+  renderizarPizarra();
+}
+
+function crearNotaFoto(event) {
   const archivo = event.target.files[0];
   if (!archivo) return;
 
@@ -383,158 +319,60 @@ function previsualizarFoto(event) {
   reader.onload = function(e) {
     const img = new Image();
     img.onload = function() {
-      // Redimensionar imagen para que sea rápida de enviar a la IA
+      // Comprimir imagen para que se guarde sin ocupar demasiada memoria
       const canvas = document.createElement('canvas');
-      const maxAncho = 800;
+      const maxAncho = 500;
       const escala = maxAncho / img.width;
       canvas.width = img.width > maxAncho ? maxAncho : img.width;
       canvas.height = img.width > maxAncho ? img.height * escala : img.height;
 
       const ctx = canvas.getContext('2d');
       ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+      const dataUrl = canvas.toDataURL('image/jpeg', 0.75);
 
-      const dataUrl = canvas.toDataURL('image/jpeg', 0.8);
-      imagenBase64Actual = dataUrl.split(',')[1]; // Solo los datos Base64
-
-      const preview = document.getElementById('preview-img');
-      preview.src = dataUrl;
-      preview.style.display = 'block';
-      document.getElementById('texto-subir').style.display = 'none';
+      misNotas.push({
+        id: Date.now(),
+        tipo: 'foto',
+        imagen: dataUrl,
+        contenido: '',
+        x: 60,
+        y: 60,
+        w: 260,
+        h: 260
+      });
+      guardarPizarra();
+      renderizarPizarra();
     };
     img.src = e.target.result;
   };
   reader.readAsDataURL(archivo);
+  event.target.value = '';
 }
 
-// Enviar la foto a Gemini para calcular calorías y macros
-async function analizarComidaConIA() {
-  const apiKey = localStorage.getItem('geminiApiKey');
-  if (!apiKey) {
-    alert('Primero tienes que configurar tu clave gratuita de IA. Pulsa en "🔑 Configurar IA" arriba a la derecha.');
-    configurarApiKey();
-    return;
-  }
-
-  if (!imagenBase64Actual) {
-    alert('Haz una foto o selecciona una imagen de tu plato primero.');
-    return;
-  }
-
-  const notaExtra = document.getElementById('nota-comida').value;
-  const estado = document.getElementById('estado-ia');
-  const boton = document.getElementById('btn-analizar');
-
-  estado.style.display = 'block';
-  estado.innerText = '⏳ Analizando el plato con IA...';
-  boton.disabled = true;
-
-  const promptIA = `Analiza esta foto de comida. ${notaExtra ? 'Nota del usuario: ' + notaExtra : ''}. 
-  Calcula una estimación realista de sus calorías y macronutrientes totales. 
-  Devuelve ÚNICAMENTE un objeto JSON válido con este formato exacto, sin texto adicional ni bloques markdown:
-  {"nombre": "Nombre del plato en español", "calorias": 550, "proteinas": 35, "carbos": 45, "grasas": 18}`;
-
-  try {
-    const respuesta = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        contents: [{
-          parts: [
-            { text: promptIA },
-            { inline_data: { mime_type: 'image/jpeg', data: imagenBase64Actual } }
-          ]
-        }]
-      })
-    });
-
-    const datos = await respuesta.json();
-
-    if (datos.error) {
-      throw new Error(datos.error.message);
-    }
-
-    let textoRespuesta = datos.candidates[0].content.parts[0].text;
-    // Limpiar posibles marcas de código si la IA las pone
-    textoRespuesta = textoRespuesta.replace(/```json/g, '').replace(/```/g, '').trim();
-    const platoCalculado = JSON.parse(textoRespuesta);
-
-    // Guardar el plato en la lista del día
-    comidasHoy.push({
-      nombre: platoCalculado.nombre,
-      calorias: Number(platoCalculado.calorias) || 0,
-      proteinas: Number(platoCalculado.proteinas) || 0,
-      carbos: Number(platoCalculado.carbos) || 0,
-      grasas: Number(platoCalculado.grasas) || 0
-    });
-
-    localStorage.setItem('comidasGuardadas', JSON.stringify(comidasHoy));
-    
-    // Limpiar el formulario tras el análisis
-    document.getElementById('nota-comida').value = '';
-    document.getElementById('preview-img').style.display = 'none';
-    document.getElementById('texto-subir').style.display = 'block';
-    imagenBase64Actual = null;
-    estado.style.display = 'none';
-
-    actualizarPanelNutricion();
-
-  } catch (error) {
-    estado.innerText = '❌ Error al analizar: comprueba tu clave de IA o intenta con otra foto.';
-    console.error(error);
-  } finally {
-    boton.disabled = false;
+function actualizarTextoNota(id, nuevoTexto) {
+  const nota = misNotas.find(n => n.id === id);
+  if (nota) {
+    nota.contenido = nuevoTexto;
+    guardarPizarra();
   }
 }
 
-function actualizarPanelNutricion() {
-  const lista = document.getElementById('lista-comidas');
-  if (!lista) return;
-  lista.innerHTML = '';
-
-  let totalCal = 0, totalProt = 0, totalCarb = 0, totalGras = 0;
-
-  comidasHoy.forEach((plato, index) => {
-    totalCal += plato.calorias;
-    totalProt += plato.proteinas;
-    totalCarb += plato.carbos;
-    totalGras += plato.grasas;
-
-    const li = document.createElement('li');
-    li.innerHTML = `
-      <div>
-        <strong>${plato.nombre}</strong>
-        <div style="color: var(--text-muted); font-size: 0.85rem; margin-top: 2px;">
-          <b style="color: var(--accent-red);">${plato.calorias} kcal</b> · Prot: ${plato.proteinas}g · Carbs: ${plato.carbos}g · Grasas: ${plato.grasas}g
-        </div>
-      </div>
-      <button class="btn-delete" onclick="borrarComida(${index})">Borrar</button>
-    `;
-    lista.appendChild(li);
-  });
-
-  document.getElementById('calorias-actuales').innerText = totalCal;
-  document.getElementById('calorias-objetivo').innerText = metaCalorias;
-  document.getElementById('total-proteinas').innerText = totalProt + 'g';
-  document.getElementById('total-carbos').innerText = totalCarb + 'g';
-  document.getElementById('total-grasas').innerText = totalGras + 'g';
-
-  const porcentaje = Math.min((totalCal / metaCalorias) * 100, 100);
-  document.getElementById('barra-calorias').style.width = porcentaje + '%';
+function borrarNota(id) {
+  misNotas = misNotas.filter(n => n.id !== id);
+  guardarPizarra();
+  renderizarPizarra();
 }
 
-function borrarComida(index) {
-  comidasHoy.splice(index, 1);
-  localStorage.setItem('comidasGuardadas', JSON.stringify(comidasHoy));
-  actualizarPanelNutricion();
-}
-
-function reiniciarComidasDia() {
-  if (confirm('¿Quieres poner a cero el contador de comidas para empezar un nuevo día?')) {
-    comidasHoy = [];
-    localStorage.setItem('comidasGuardadas', JSON.stringify(comidasHoy));
-    actualizarPanelNutricion();
+function limpiarPizarra() {
+  if (confirm('¿Quieres borrar todas las notas de la pizarra?')) {
+    misNotas = [];
+    guardarPizarra();
+    renderizarPizarra();
   }
 }
 
-actualizarPanelNutricion();
-
+// Iniciar toda la aplicación
+actualizarContadores();
+mostrarEventos();
+mostrarEntreno();
+renderizarPizarra();
