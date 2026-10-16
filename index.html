@@ -164,12 +164,19 @@
           Sube una foto o usa la cámara del móvil. También puedes añadir una nota (ej: "son 200g de pollo" o "hecho en airfryer sin aceite").
         </p>
 
-        <div class="scanner-box">
-          <input type="file" id="foto-comida" accept="image/*" capture="environment" onchange="previsualizarFoto(event)" style="display: none;">
-          <label for="foto-comida" class="upload-area" id="zona-foto">
-            <span id="texto-subir">📷 Pulsa aquí para hacer foto o elegir imagen</span>
-            <img id="preview-img" src="" alt="Vista previa" style="display: none;">
-          </label>
+      <div class="scanner-box">
+          <!-- Input para la Galería -->
+          <input type="file" id="foto-galeria" accept="image/*" onchange="previsualizarFoto(event)" style="display: none;">
+          <!-- Input directo para la Cámara -->
+          <input type="file" id="foto-camara" accept="image/*" capture="environment" onchange="previsualizarFoto(event)" style="display: none;">
+
+          <div class="upload-area" id="zona-foto">
+            <div id="texto-subir" style="display: flex; gap: 12px; flex-wrap: wrap; justify-content: center;">
+              <label for="foto-camara" class="btn-red" style="cursor: pointer;">📷 Hacer Foto</label>
+              <label for="foto-galeria" class="btn-outline" style="background: white; cursor: pointer;">🖼️ Elegir de la Galería</label>
+            </div>
+            <img id="preview-img" src="" alt="Vista previa" style="display: none; margin-top: 12px;">
+          </div>
 
           <div class="scanner-controls">
             <input type="text" id="nota-comida" placeholder="Detalle opcional (ej: sin aceite, ración grande...)">
@@ -186,7 +193,7 @@
         <ul id="lista-comidas" class="clean-list"></ul>
       </div>
     </section>
-    
+
     <!-- SECCIÓN 4: PIZARRA -->
     <section id="pizarra" class="tab-content">
       <header class="section-header">
