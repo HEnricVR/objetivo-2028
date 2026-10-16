@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Objetivo 2028 | Preparación</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Menú de navegación (Lateral en PC, Inferior en Móvil) -->
+  <nav class="sidebar">
+    <div class="logo">
+      <span class="red-dot"></span>
+      <h1>OBJETIVO <span>2028</span></h1>
+    </div>
+    <ul class="nav-links">
+      <li><button class="nav-btn active" onclick="cambiarPestana('calendario', this)">Calendario y Metas</button></li>
+      <li><button class="nav-btn" onclick="cambiarPestana('entreno', this)">Entrenamiento</button></li>
+      <li><button class="nav-btn" onclick="cambiarPestana('comidas', this)">Comidas (IA)</button></li>
+      <li><button class="nav-btn" onclick="cambiarPestana('pizarra', this)">Pizarra de Notas</button></li>
+    </ul>
+  </nav>
+
+  <!-- Contenido Principal -->
+  <main class="content">
+
+    <!-- SECCIÓN 1: CALENDARIO Y CUENTA ATRÁS -->
+    <section id="calendario" class="tab-content active">
+      <header class="section-header">
+        <h2>Cuenta Atrás y Planificación</h2>
+        <p>El camino hacia las pruebas de verano de 2028</p>
+      </header>
+
+      <!-- Tarjetas de Cuenta Atrás -->
+      <div class="countdown-grid">
+        <div class="card">
+          <span class="card-tag">17 NOV 2027</span>
+          <h3>Mayoría de Edad (18 años)</h3>
+          <p class="days-number" id="dias-18">---</p>
+          <span class="days-label">días restantes</span>
+        </div>
+
+        <div class="card">
+          <span class="card-tag">INVIERNO 2027/28</span>
+          <h3>Objetivo Carnet de Conducir</h3>
+          <p class="days-number" id="dias-carnet">---</p>
+          <span class="days-label">días restantes</span>
+        </div>
+
+        <div class="card highlight-card">
+          <span class="card-tag">VERANO 2028</span>
+          <h3>Pruebas y Exámenes Oficiales</h3>
+          <p class="days-number" id="dias-opos">---</p>
+          <span class="days-label">días restantes</span>
+        </div>
+      </div>
+
+      <!-- Hitos y Fechas Personales -->
+      <div class="card mt-large">
+        <h3>Mis Próximos Exámenes y Fechas Clave</h3>
+        <div class="form-row">
+          <input type="text" id="evento-titulo" placeholder="Ej: Simulacro teórico, Prueba de Course Navette...">
+          <input type="date" id="evento-fecha">
+          <button class="btn-red" onclick="agregarEvento()">Añadir Fecha</button>
+        </div>
+        <ul id="lista-eventos" class="clean-list"></ul>
+      </div>
+    </section>
+
+    <!-- SECCIÓN 2: ENTRENAMIENTO -->
+    <section id="entreno" class="tab-content">
+      <header class="section-header">
+        <h2>Rutina de Entrenamiento</h2>
+        <p>Registra tus ejercicios, series y marcas físicas</p>
+      </header>
+      <div class="card">
+        <p>En el siguiente paso activaremos aquí tu tabla de ejercicios configurable.</p>
+      </div>
+    </section>
+
+    <!-- SECCIÓN 3: COMIDAS CON IA -->
+    <section id="comidas" class="tab-content">
+      <header class="section-header">
+        <h2>Escáner de Comidas con IA</h2>
+        <p>Sube una foto de tu plato para calcular calorías y macronutrientes</p>
+      </header>
+      <div class="card">
+        <p>En el siguiente paso conectaremos este apartado con la cámara y la inteligencia artificial.</p>
+      </div>
+    </section>
+
+    <!-- SECCIÓN 4: PIZARRA -->
+    <section id="pizarra" class="tab-content">
+      <header class="section-header">
+        <h2>Pizarra Libre</h2>
+        <p>Tus notas y fotos arrastrables</p>
+      </header>
+      <div class="card">
+        <p>Aquí construiremos el lienzo para mover y cambiar de tamaño tus notas.</p>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>

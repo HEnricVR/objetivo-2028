@@ -1,0 +1,254 @@
+:root {
+  --bg-main: #F4F4F6;       /* Gris piedra suave (pared moderna) */
+  --bg-card: #FFFFFF;       /* Blanco puro */
+  --text-dark: #121212;     /* Negro carbón */
+  --text-muted: #71717A;    /* Gris medio para subtítulos */
+  --accent-red: #D90429;    /* Rojo limpio para detalles clave */
+  --border-light: #E4E4E7;  /* Bordes finos y limpios */
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+body {
+  background-color: var(--bg-main);
+  color: var(--text-dark);
+  display: flex;
+  min-height: 100vh;
+}
+
+/* Barra lateral minimalista */
+.sidebar {
+  width: 260px;
+  background-color: var(--bg-card);
+  border-right: 1px solid var(--border-light);
+  padding: 32px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.red-dot {
+  width: 12px;
+  height: 12px;
+  background-color: var(--accent-red);
+  border-radius: 50%;
+}
+
+.logo h1 {
+  font-size: 1.15rem;
+  font-weight: 800;
+  letter-spacing: 1px;
+}
+
+.logo h1 span {
+  color: var(--accent-red);
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.nav-btn {
+  width: 100%;
+  text-align: left;
+  background: transparent;
+  border: none;
+  padding: 14px 16px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border-left: 3px solid transparent;
+}
+
+.nav-btn:hover {
+  background-color: var(--bg-main);
+  color: var(--text-dark);
+}
+
+.nav-btn.active {
+  background-color: #FFF0F3;
+  color: var(--accent-red);
+  font-weight: 700;
+  border-left: 3px solid var(--accent-red);
+}
+
+/* Zona principal */
+.content {
+  flex: 1;
+  padding: 40px 48px;
+  max-width: 1200px;
+}
+
+.section-header {
+  margin-bottom: 32px;
+}
+
+.section-header h2 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+
+.section-header p {
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
+/* Pestañas ocultas/activas */
+.tab-content {
+  display: none;
+}
+
+.tab-content.active {
+  display: block;
+}
+
+/* Tarjetas estilo arquitectónico */
+.countdown-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 24px;
+}
+
+.card {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-light);
+  border-radius: 10px;
+  padding: 24px;
+}
+
+.highlight-card {
+  border-top: 4px solid var(--accent-red);
+}
+
+.card-tag {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: var(--text-muted);
+}
+
+.card h3 {
+  font-size: 1.1rem;
+  margin-top: 6px;
+  margin-bottom: 16px;
+}
+
+.days-number {
+  font-size: 3.2rem;
+  font-weight: 800;
+  color: var(--accent-red);
+  line-height: 1;
+}
+
+.days-label {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.mt-large {
+  margin-top: 32px;
+}
+
+/* Formularios y botones */
+.form-row {
+  display: flex;
+  gap: 12px;
+  margin-top: 16px;
+  flex-wrap: wrap;
+}
+
+input {
+  padding: 12px 14px;
+  border: 1px solid var(--border-light);
+  border-radius: 6px;
+  font-size: 0.95rem;
+  flex: 1;
+  min-width: 200px;
+  outline: none;
+}
+
+input:focus {
+  border-color: var(--accent-red);
+}
+
+.btn-red {
+  background-color: var(--accent-red);
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn-red:hover {
+  opacity: 0.9;
+}
+
+/* Lista de fechas */
+.clean-list {
+  list-style: none;
+  margin-top: 20px;
+}
+
+.clean-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.btn-delete {
+  background: none;
+  border: none;
+  color: var(--accent-red);
+  cursor: pointer;
+  font-weight: 600;
+}
+
+/* Adaptación para el móvil */
+@media (max-width: 768px) {
+  body {
+    flex-direction: column;
+  }
+  .sidebar {
+    width: 100%;
+    padding: 16px;
+    gap: 16px;
+  }
+  .nav-links {
+    flex-direction: row;
+    overflow-x: auto;
+  }
+  .nav-btn {
+    white-space: nowrap;
+    border-left: none;
+    border-bottom: 3px solid transparent;
+  }
+  .nav-btn.active {
+    border-left: none;
+    border-bottom: 3px solid var(--accent-red);
+  }
+  .content {
+    padding: 24px 16px;
+  }
+}
