@@ -106,7 +106,7 @@
       <div id="contenedor-entreno" class="workout-grid mt-small"></div>
     </section>
 
-    <!-- SECCIÓN 3: PIZARRA INTERACTIVA -->
+   <!-- SECCIÓN 3: PIZARRA INTERACTIVA -->
     <section id="pizarra" class="tab-content">
       <header class="section-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
         <div>
@@ -114,16 +114,16 @@
           <p>Arrastra las notas desde su barra superior y estíralas desde la esquina inferior derecha</p>
         </div>
         <div class="board-toolbar">
-          <button class="btn-red" onclick="crearNotaTexto()">+ Nota de Texto</button>
+          <button type="button" class="btn-red" onclick="crearNotaTexto()">+ Nota de Texto</button>
           <input type="file" id="foto-pizarra" accept="image/*" onchange="crearNotaFoto(event)" style="display: none;">
-          <label for="foto-pizarra" class="btn-outline" style="background: white; cursor: pointer; display: inline-flex; align-items: center;">
+          <label for="foto-pizarra" class="btn-outline" style="cursor: pointer; display: inline-flex; align-items: center;">
             🖼️ + Nota con Foto
           </label>
-          <button class="btn-outline" onclick="limpiarPizarra()">Limpiar todo</button>
+          <button type="button" class="btn-outline" onclick="limpiarPizarra()">Limpiar todo</button>
         </div>
       </header>
 
-      <!-- Lienzo de la pizarra -->
+      <!-- ESTE DIV ES IMPRESCINDIBLE PARA QUE SALGAN LAS NOTAS -->
       <div id="lienzo-pizarra" class="board-canvas"></div>
     </section>
 
