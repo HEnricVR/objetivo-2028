@@ -85,22 +85,172 @@ actualizarContadores();
 mostrarEventos();
 
 // ==========================================
-// 4. MÓDULO DE ENTRENAMIENTO CONFIGURABLE
+// 4. MÓDULO DE ENTRENAMIENTO (RUTINA HEVY)
 // ==========================================
 
-let filtroActual = 'Todas';
+let filtroActual = 'Empuje'; // Empieza mostrando el día de Empuje
 
-// Si es la primera vez que abres la app, cargamos 3 pruebas clave de ejemplo
-const ejerciciosPorDefecto = [
-  { categoria: 'Pruebas Oficiales', nombre: 'Course Navette (Resistencia)', marca: 'Objetivo: Palier 11', completado: false },
-  { categoria: 'Pruebas Oficiales', nombre: 'Circuito de Agilidad', marca: 'Objetivo: < 9.5 seg', completado: false },
-  { categoria: 'Fuerza / Tren Superior', nombre: 'Dominadas Estrictas', marca: '4 series x 10 reps', completado: false }
+const rutinaHevyPorDefecto = [
+  // DÍA 1: EMPUJE
+  {
+    categoria: 'Empuje',
+    nombre: 'Press de Banca Inclinado (Mancuerna)',
+    marca: '3 series · 8 reps · ⏱ 2min 0s',
+    nota: 'Baja lentamente las mancuernas tanto como puedas hacia tus lados para sentir un buen estiramiento en la parte superior del pecho.',
+    completado: false
+  },
+  {
+    categoria: 'Empuje',
+    nombre: 'Aperturas (Mancuerna)',
+    marca: '3 series · 8 reps · ⏱ 1min 45s',
+    nota: '',
+    completado: false
+  },
+  {
+    categoria: 'Empuje',
+    nombre: 'Elevación Lateral (Mancuerna)',
+    marca: '3 series · 8 reps · ⏱ 1min 45s',
+    nota: 'Mantén el movimiento lento y controlado; evita usar el impulso, especialmente cuando tus hombros comiencen a arder.',
+    completado: false
+  },
+  {
+    categoria: 'Empuje',
+    nombre: 'Press de Banca (Barra)',
+    marca: '3 series · 8 reps · ⏱ 2min 30s',
+    nota: 'Controla la barra al bajar y toca la parte inferior del pecho. Haz una pausa breve y presiona sin rebotar.',
+    completado: false
+  },
+  {
+    categoria: 'Empuje',
+    nombre: 'Press de Hombros Sentado (Máquina)',
+    marca: '3 series · 8 reps · ⏱ 2min 0s',
+    nota: 'Mantén abdominales comprometidos y baja las manijas hasta que tus codos estén ligeramente por debajo del nivel de los hombros.',
+    completado: false
+  },
+  {
+    categoria: 'Empuje',
+    nombre: 'Jalón de tríceps con cuerda',
+    marca: '3 series · 8 reps · ⏱ 1min 30s',
+    nota: 'Extiende tus brazos completamente en cada repetición y dóblalos lentamente durante la parte negativa.',
+    completado: false
+  },
+
+  // DÍA 2: TIRÓN
+  {
+    categoria: 'Tirón',
+    nombre: 'Encogimiento de Hombros (Mancuerna)',
+    marca: '3 series · 8 reps · ⏱ 2min 0s',
+    nota: 'Encoge los hombros hacia arriba en un solo movimiento fluido y haz una breve pausa en la posición superior.',
+    completado: false
+  },
+  {
+    categoria: 'Tirón',
+    nombre: 'Curl de Bíceps (Mancuerna)',
+    marca: '3 series · 8 reps · ⏱ 1min 45s',
+    nota: '',
+    completado: false
+  },
+  {
+    categoria: 'Tirón',
+    nombre: 'Remo Inclinado (Barra)',
+    marca: '3 series · 8 reps · ⏱ 2min 30s',
+    nota: 'Baja lentamente el peso para sentir un estiramiento en la parte superior de la espalda. Tira en un movimiento fluido.',
+    completado: false
+  },
+  {
+    categoria: 'Tirón',
+    nombre: 'Remo Sentado con Cable - Agarre Recto',
+    marca: '3 series · 8 reps · ⏱ 2min 0s',
+    nota: '',
+    completado: false
+  },
+  {
+    categoria: 'Tirón',
+    nombre: 'Jalón al Pecho (Cable)',
+    marca: '3 series · 8 reps · ⏱ 2min 0s',
+    nota: 'Tira de la barra hacia tu pecho superior y extiende lentamente los brazos sintiendo el estiramiento en los dorsales.',
+    completado: false
+  },
+  {
+    categoria: 'Tirón',
+    nombre: 'Tirón a la Cara (Face Pull)',
+    marca: '3 series · 8 reps · ⏱ 1min 30s',
+    nota: 'Tira de la cuerda hacia tu cara activando la parte superior de la espalda y manteniendo la posición un momento.',
+    completado: false
+  },
+
+  // DÍA 3: PIERNAS
+  {
+    categoria: 'Piernas',
+    nombre: 'Sentadilla (Mancuerna)',
+    marca: '3 series · 8-10 reps · ⏱ 2min 30s',
+    nota: '',
+    completado: false
+  },
+  {
+    categoria: 'Piernas',
+    nombre: 'Press de Piernas (Prensa)',
+    marca: '3 series · 8 reps · ⏱ 2min 0s',
+    nota: '',
+    completado: false
+  },
+  {
+    categoria: 'Piernas',
+    nombre: 'Elevación de glúteos y femorales',
+    marca: '3 series · 8 reps · ⏱ 2min 0s',
+    nota: 'Sostén un disco o mancuerna si puedes hacer más de 15 reps con peso corporal. Entrena a RPE 8-9.',
+    completado: false
+  },
+  {
+    categoria: 'Piernas',
+    nombre: 'Curl de Piernas Acostado (Máquina)',
+    marca: '3 series · 8 reps · ⏱ 2min 0s',
+    nota: 'Extiende lentamente tus piernas sintiendo un estiramiento intenso en tus isquiotibiales.',
+    completado: false
+  },
+  {
+    categoria: 'Piernas',
+    nombre: 'Extensión de Pierna',
+    marca: '3 series · 8 reps · ⏱ 2min 0s',
+    nota: 'Haz las repeticiones lentamente y con buen control, especialmente al doblar las rodillas.',
+    completado: false
+  },
+  {
+    categoria: 'Piernas',
+    nombre: 'Elevación de Gemelos de Pie (Máquina)',
+    marca: '3 series · 8 reps · ⏱ 2min 0s',
+    nota: 'Baja lentamente los talones para un estiramiento intenso y haz una pausa breve en lugar de rebotar.',
+    completado: false
+  },
+
+  // PRUEBAS OFICIALES GUÀRDIA URBANA
+  {
+    categoria: 'Pruebas Oficiales',
+    nombre: 'Course Navette (Test de Leger)',
+    marca: 'Objetivo: Superar Palier 10-11',
+    nota: 'Prueba oficial de resistencia aeróbica de ida y vuelta en 20 metros al ritmo del pitido.',
+    completado: false
+  },
+  {
+    categoria: 'Pruebas Oficiales',
+    nombre: 'Circuito de Agilidad y Velocidad',
+    marca: 'Objetivo: < 9.5 segundos',
+    nota: 'Salida sentada en el suelo, paso por vallas y eslalon entre conos sin derribarlos.',
+    completado: false
+  },
+  {
+    categoria: 'Pruebas Oficiales',
+    nombre: 'Lanzamiento de Balón Medicinal / Dinamometría',
+    marca: 'Registrar mejor marca en metros / kg',
+    nota: 'Potencia de tren superior y fuerza de tracción.',
+    completado: false
+  }
 ];
 
-let misEjercicios = JSON.parse(localStorage.getItem('entrenoGuardado')) || ejerciciosPorDefecto;
+let misEjercicios = JSON.parse(localStorage.getItem('entrenoHevyV2')) || rutinaHevyPorDefecto;
 
 function guardarEntrenoLocal() {
-  localStorage.setItem('entrenoGuardado', JSON.stringify(misEjercicios));
+  localStorage.setItem('entrenoHevyV2', JSON.stringify(misEjercicios));
 }
 
 function mostrarEntreno() {
@@ -109,13 +259,8 @@ function mostrarEntreno() {
   contenedor.innerHTML = '';
 
   misEjercicios.forEach((ej, index) => {
-    // Filtrar por categoría si no está en "Todas"
-    if (filtroActual !== 'Todas') {
-      if (filtroActual === 'Pierna y Resistencia' && (ej.categoria !== 'Pierna y Potencia' && ej.categoria !== 'Cardio y Resistencia')) {
-        return;
-      } else if (filtroActual !== 'Pierna y Resistencia' && ej.categoria !== filtroActual) {
-        return;
-      }
+    if (filtroActual !== 'Todas' && ej.categoria !== filtroActual) {
+      return;
     }
 
     const card = document.createElement('div');
@@ -128,9 +273,10 @@ function mostrarEntreno() {
             <h4>${ej.nombre}</h4>
           </div>
         </div>
-        <div style="margin-top: 12px;">
+        <div style="margin-top: 10px;">
           <span class="workout-mark">${ej.marca}</span>
         </div>
+        ${ej.nota ? `<p style="color: var(--text-muted); font-size: 0.85rem; margin-top: 10px; line-height: 1.4;">${ej.nota}</p>` : ''}
       </div>
       <div class="workout-actions">
         <label class="check-label">
@@ -138,7 +284,7 @@ function mostrarEntreno() {
           Hecho hoy
         </label>
         <div>
-          <button class="btn-small" onclick="editarMarca(${index})">Editar marca</button>
+          <button class="btn-small" onclick="editarMarca(${index})">Anote / Peso</button>
           <button class="btn-delete" style="margin-left:10px; font-size:0.85rem;" onclick="borrarEjercicio(${index})">Borrar</button>
         </div>
       </div>
@@ -157,7 +303,7 @@ function agregarEjercicio() {
     return;
   }
 
-  misEjercicios.push({ categoria, nombre, marca, completado: false });
+  misEjercicios.push({ categoria, nombre, marca, nota: '', completado: false });
   guardarEntrenoLocal();
 
   document.getElementById('entreno-nombre').value = '';
@@ -172,7 +318,7 @@ function alternarCompletado(index) {
 }
 
 function editarMarca(index) {
-  const nuevaMarca = prompt(`Actualiza tu serie o marca para ${misEjercicios[index].nombre}:`, misEjercicios[index].marca);
+  const nuevaMarca = prompt(`Actualiza tus series, peso en kg o marca para ${misEjercicios[index].nombre}:`, misEjercicios[index].marca);
   if (nuevaMarca !== null && nuevaMarca.trim() !== '') {
     misEjercicios[index].marca = nuevaMarca;
     guardarEntrenoLocal();
@@ -199,5 +345,4 @@ function reiniciarChecksEntreno() {
   mostrarEntreno();
 }
 
-// Iniciar la lista de entrenamientos al cargar la página
 mostrarEntreno();

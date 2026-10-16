@@ -68,36 +68,42 @@
       </div>
     </section>
 
-   <!-- SECCIÓN 2: ENTRENAMIENTO -->
+<!-- SECCIÓN 2: ENTRENAMIENTO -->
     <section id="entreno" class="tab-content">
-      <header class="section-header">
-        <h2>Rutina y Marcas Físicas</h2>
-        <p>Configura tus bloques de entrenamiento y actualiza tus marcas personales</p>
+      <header class="section-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
+        <div>
+          <h2>Intermedio Empuje / Tirón / Piernas</h2>
+          <p>Tu rutina de Hevy sincronizada + Preparación de pruebas físicas</p>
+        </div>
+        <a href="https://hevy.com/folder/1097540" target="_blank" class="btn-outline" style="text-decoration: none;">
+          Abrir en Hevy ↗
+        </a>
       </header>
 
-      <!-- Formulario para añadir ejercicios -->
+      <!-- Formulario para añadir nuevos ejercicios -->
       <div class="card">
         <h3>Añadir Ejercicio o Prueba</h3>
         <div class="form-row">
           <select id="entreno-categoria">
+            <option value="Empuje">💪 Empuje</option>
+            <option value="Tirón">🦍 Tirón</option>
+            <option value="Piernas">🦵 Piernas</option>
             <option value="Pruebas Oficiales">🎯 Pruebas Oficiales</option>
-            <option value="Fuerza / Tren Superior">💪 Fuerza / Tren Superior</option>
-            <option value="Pierna y Potencia">🦵 Pierna y Potencia</option>
-            <option value="Cardio y Resistencia">🏃 Cardio y Resistencia</option>
           </select>
-          <input type="text" id="entreno-nombre" placeholder="Ej: Course Navette, Press Banca, Circuito...">
-          <input type="text" id="entreno-marca" placeholder="Series o Marca (Ej: 4x10 - 60kg / Palier 10.5)">
+          <input type="text" id="entreno-nombre" placeholder="Nombre del ejercicio...">
+          <input type="text" id="entreno-marca" placeholder="Series, reps y descanso (Ej: 3x8 · ⏱ 2min)">
           <button class="btn-red" onclick="agregarEjercicio()">Guardar</button>
         </div>
       </div>
 
-      <!-- Barra de filtros y reinicio diario -->
+      <!-- Barra de filtros con tus días de Hevy -->
       <div class="workout-controls mt-large">
-        <div class="filter- pills">
-          <button class="pill-btn active" onclick="filtrarEntreno('Todas', this)">Todas</button>
+        <div class="filter-pills">
+          <button class="pill-btn active" onclick="filtrarEntreno('Empuje', this)">Empuje (6)</button>
+          <button class="pill-btn" onclick="filtrarEntreno('Tirón', this)">Tirón (6)</button>
+          <button class="pill-btn" onclick="filtrarEntreno('Piernas', this)">Piernas (6)</button>
           <button class="pill-btn" onclick="filtrarEntreno('Pruebas Oficiales', this)">Pruebas Oficiales</button>
-          <button class="pill-btn" onclick="filtrarEntreno('Fuerza / Tren Superior', this)">Tren Superior</button>
-          <button class="pill-btn" onclick="filtrarEntreno('Pierna y Resistencia', this)">Pierna / Cardio</button>
+          <button class="pill-btn" onclick="filtrarEntreno('Todas', this)">Ver Todos</button>
         </div>
         <button class="btn-outline" onclick="reiniciarChecksEntreno()">Reiniciar día</button>
       </div>
