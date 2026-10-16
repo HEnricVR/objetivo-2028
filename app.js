@@ -346,3 +346,195 @@ function reiniciarChecksEntreno() {
 }
 
 mostrarEntreno();
+
+// ==========================================
+// 5. MÓDULO DE COMIDAS CON IA (GEMINI API)
+// ==========================================
+
+let comidasHoy = JSON.parse(localStorage.getItem('comidasGuardadas')) || [];
+let metaCalorias = parseInt(localStorage.getItem('metaCalorias')) || 2200;
+let imagenBase64Actual = null;
+
+// Guardar tu clave de Gemini en el navegador de forma privada
+function configurarApiKey() {
+  const claveActual = localStorage.getItem('geminiApiKey') || '';
+  const nuevaClave = prompt('Pega aquí tu API Key gratuita de Google AI Studio (empieza por AIza...):', claveActual);
+  if (nuevaClave !== null) {
+    localStorage.setItem('geminiApiKey', nuevaClave.trim());
+    alert('✅ Clave de IA guardada en tu navegador.');
+  }
+}
+
+function cambiarObjetivoCalorias() {
+  const nuevaMeta = prompt('¿Cuál es tu objetivo de calorías diarias (kcal)?', metaCalorias);
+  if (nuevaMeta && !isNaN(nuevaMeta)) {
+    metaCalorias = parseInt(nuevaMeta);
+    localStorage.setItem('metaCalorias', metaCalorias);
+    actualizarPanelNutricion();
+  }
+}
+
+// Mostrar y comprimir la foto seleccionada
+function previsualizarFoto(event) {
+  const archivo = event.target.files[0];
+  if (!archivo) return;
+
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    const img = new Image();
+    img.onload = function() {
+      // Redimensionar imagen para que sea rápida de enviar a la IA
+      const canvas = document.createElement('canvas');
+      const maxAncho = 800;
+      const escala = maxAncho / img.width;
+      canvas.width = img.width > maxAncho ? maxAncho : img.width;
+      canvas.height = img.width > maxAncho ? img.height * escala : img.height;
+
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+      const dataUrl = canvas.toDataURL('image/jpeg', 0.8);
+      imagenBase64Actual = dataUrl.split(',')[1]; // Solo los datos Base64
+
+      const preview = document.getElementById('preview-img');
+      preview.src = dataUrl;
+      preview.style.display = 'block';
+      document.getElementById('texto-subir').style.display = 'none';
+    };
+    img.src = e.target.result;
+  };
+  reader.readAsDataURL(archivo);
+}
+
+// Enviar la foto a Gemini para calcular calorías y macros
+async function analizarComidaConIA() {
+  const apiKey = localStorage.getItem('geminiApiKey');
+  if (!apiKey) {
+    alert('Primero tienes que configurar tu clave gratuita de IA. Pulsa en "🔑 Configurar IA" arriba a la derecha.');
+    configurarApiKey();
+    return;
+  }
+
+  if (!imagenBase64Actual) {
+    alert('Haz una foto o selecciona una imagen de tu plato primero.');
+    return;
+  }
+
+  const notaExtra = document.getElementById('nota-comida').value;
+  const estado = document.getElementById('estado-ia');
+  const boton = document.getElementById('btn-analizar');
+
+  estado.style.display = 'block';
+  estado.innerText = '⏳ Analizando el plato con IA...';
+  boton.disabled = true;
+
+  const promptIA = `Analiza esta foto de comida. ${notaExtra ? 'Nota del usuario: ' + notaExtra : ''}. 
+  Calcula una estimación realista de sus calorías y macronutrientes totales. 
+  Devuelve ÚNICAMENTE un objeto JSON válido con este formato exacto, sin texto adicional ni bloques markdown:
+  {"nombre": "Nombre del plato en español", "calorias": 550, "proteinas": 35, "carbos": 45, "grasas": 18}`;
+
+  try {
+    const respuesta = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        contents: [{
+          parts: [
+            { text: promptIA },
+            { inline_data: { mime_type: 'image/jpeg', data: imagenBase64Actual } }
+          ]
+        }]
+      })
+    });
+
+    const datos = await respuesta.json();
+
+    if (datos.error) {
+      throw new Error(datos.error.message);
+    }
+
+    let textoRespuesta = datos.candidates[0].content.parts[0].text;
+    // Limpiar posibles marcas de código si la IA las pone
+    textoRespuesta = textoRespuesta.replace(/```json/g, '').replace(/```/g, '').trim();
+    const platoCalculado = JSON.parse(textoRespuesta);
+
+    // Guardar el plato en la lista del día
+    comidasHoy.push({
+      nombre: platoCalculado.nombre,
+      calorias: Number(platoCalculado.calorias) || 0,
+      proteinas: Number(platoCalculado.proteinas) || 0,
+      carbos: Number(platoCalculado.carbos) || 0,
+      grasas: Number(platoCalculado.grasas) || 0
+    });
+
+    localStorage.setItem('comidasGuardadas', JSON.stringify(comidasHoy));
+    
+    // Limpiar el formulario tras el análisis
+    document.getElementById('nota-comida').value = '';
+    document.getElementById('preview-img').style.display = 'none';
+    document.getElementById('texto-subir').style.display = 'block';
+    imagenBase64Actual = null;
+    estado.style.display = 'none';
+
+    actualizarPanelNutricion();
+
+  } catch (error) {
+    estado.innerText = '❌ Error al analizar: comprueba tu clave de IA o intenta con otra foto.';
+    console.error(error);
+  } finally {
+    boton.disabled = false;
+  }
+}
+
+function actualizarPanelNutricion() {
+  const lista = document.getElementById('lista-comidas');
+  if (!lista) return;
+  lista.innerHTML = '';
+
+  let totalCal = 0, totalProt = 0, totalCarb = 0, totalGras = 0;
+
+  comidasHoy.forEach((plato, index) => {
+    totalCal += plato.calorias;
+    totalProt += plato.proteinas;
+    totalCarb += plato.carbos;
+    totalGras += plato.grasas;
+
+    const li = document.createElement('li');
+    li.innerHTML = `
+      <div>
+        <strong>${plato.nombre}</strong>
+        <div style="color: var(--text-muted); font-size: 0.85rem; margin-top: 2px;">
+          <b style="color: var(--accent-red);">${plato.calorias} kcal</b> · Prot: ${plato.proteinas}g · Carbs: ${plato.carbos}g · Grasas: ${plato.grasas}g
+        </div>
+      </div>
+      <button class="btn-delete" onclick="borrarComida(${index})">Borrar</button>
+    `;
+    lista.appendChild(li);
+  });
+
+  document.getElementById('calorias-actuales').innerText = totalCal;
+  document.getElementById('calorias-objetivo').innerText = metaCalorias;
+  document.getElementById('total-proteinas').innerText = totalProt + 'g';
+  document.getElementById('total-carbos').innerText = totalCarb + 'g';
+  document.getElementById('total-grasas').innerText = totalGras + 'g';
+
+  const porcentaje = Math.min((totalCal / metaCalorias) * 100, 100);
+  document.getElementById('barra-calorias').style.width = porcentaje + '%';
+}
+
+function borrarComida(index) {
+  comidasHoy.splice(index, 1);
+  localStorage.setItem('comidasGuardadas', JSON.stringify(comidasHoy));
+  actualizarPanelNutricion();
+}
+
+function reiniciarComidasDia() {
+  if (confirm('¿Quieres poner a cero el contador de comidas para empezar un nuevo día?')) {
+    comidasHoy = [];
+    localStorage.setItem('comidasGuardadas', JSON.stringify(comidasHoy));
+    actualizarPanelNutricion();
+  }
+}
+
+actualizarPanelNutricion();
+

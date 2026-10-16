@@ -112,17 +112,81 @@
       <div id="contenedor-entreno" class="workout-grid mt-small"></div>
     </section>
 
-    <!-- SECCIÓN 3: COMIDAS CON IA -->
+   <!-- SECCIÓN 3: COMIDAS CON IA -->
     <section id="comidas" class="tab-content">
-      <header class="section-header">
-        <h2>Escáner de Comidas con IA</h2>
-        <p>Sube una foto de tu plato para calcular calorías y macronutrientes</p>
+      <header class="section-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
+        <div>
+          <h2>Escáner Nutricional con IA</h2>
+          <p>Haz una foto a tu plato para calcular calorías y macronutrientes al instante</p>
+        </div>
+        <button class="btn-outline" onclick="configurarApiKey()">🔑 Configurar IA</button>
       </header>
-      <div class="card">
-        <p>En el siguiente paso conectaremos este apartado con la cámara y la inteligencia artificial.</p>
+
+      <!-- Panel de Resumen Diario -->
+      <div class="card highlight-card">
+        <div class="nutrition-header">
+          <div>
+            <span class="card-tag">CONSUMO DE HOY</span>
+            <h3 style="margin-bottom: 0;"><span id="calorias-actuales" style="color: var(--accent-red); font-size: 2rem; font-weight: 800;">0</span> <span style="font-size: 1.1rem; color: var(--text-muted);">/ <span id="calorias-objetivo">2200</span> kcal</span></h3>
+          </div>
+          <div style="display: flex; gap: 8px;">
+            <button class="btn-small" onclick="cambiarObjetivoCalorias()">Cambiar meta</button>
+            <button class="btn-outline" onclick="reiniciarComidasDia()">Nuevo día</button>
+          </div>
+        </div>
+
+        <!-- Barra de progreso -->
+        <div class="progress-bar-bg">
+          <div id="barra-calorias" class="progress-bar-fill"></div>
+        </div>
+
+        <!-- Macros totales -->
+        <div class="macros-grid">
+          <div class="macro-box">
+            <span class="macro-label">Proteínas</span>
+            <strong id="total-proteinas">0g</strong>
+          </div>
+          <div class="macro-box">
+            <span class="macro-label">Carbohidratos</span>
+            <strong id="total-carbos">0g</strong>
+          </div>
+          <div class="macro-box">
+            <span class="macro-label">Grasas</span>
+            <strong id="total-grasas">0g</strong>
+          </div>
+        </div>
+      </div>
+
+      <!-- Escáner de Fotos con IA -->
+      <div class="card mt-large">
+        <h3>📸 Escanear Plato con IA</h3>
+        <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: -8px; margin-bottom: 16px;">
+          Sube una foto o usa la cámara del móvil. También puedes añadir una nota (ej: "son 200g de pollo" o "hecho en airfryer sin aceite").
+        </p>
+
+        <div class="scanner-box">
+          <input type="file" id="foto-comida" accept="image/*" capture="environment" onchange="previsualizarFoto(event)" style="display: none;">
+          <label for="foto-comida" class="upload-area" id="zona-foto">
+            <span id="texto-subir">📷 Pulsa aquí para hacer foto o elegir imagen</span>
+            <img id="preview-img" src="" alt="Vista previa" style="display: none;">
+          </label>
+
+          <div class="scanner-controls">
+            <input type="text" id="nota-comida" placeholder="Detalle opcional (ej: sin aceite, ración grande...)">
+            <button class="btn-red" id="btn-analizar" onclick="analizarComidaConIA()">✨ Analizar con IA</button>
+          </div>
+        </div>
+
+        <p id="estado-ia" style="display: none; margin-top: 14px; font-weight: 600; color: var(--accent-red);"></p>
+      </div>
+
+      <!-- Registro de Comidas del Día -->
+      <div class="card mt-large">
+        <h3>Platos Registrados Hoy</h3>
+        <ul id="lista-comidas" class="clean-list"></ul>
       </div>
     </section>
-
+    
     <!-- SECCIÓN 4: PIZARRA -->
     <section id="pizarra" class="tab-content">
       <header class="section-header">
