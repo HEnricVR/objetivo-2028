@@ -68,15 +68,42 @@
       </div>
     </section>
 
-    <!-- SECCIÓN 2: ENTRENAMIENTO -->
+   <!-- SECCIÓN 2: ENTRENAMIENTO -->
     <section id="entreno" class="tab-content">
       <header class="section-header">
-        <h2>Rutina de Entrenamiento</h2>
-        <p>Registra tus ejercicios, series y marcas físicas</p>
+        <h2>Rutina y Marcas Físicas</h2>
+        <p>Configura tus bloques de entrenamiento y actualiza tus marcas personales</p>
       </header>
+
+      <!-- Formulario para añadir ejercicios -->
       <div class="card">
-        <p>En el siguiente paso activaremos aquí tu tabla de ejercicios configurable.</p>
+        <h3>Añadir Ejercicio o Prueba</h3>
+        <div class="form-row">
+          <select id="entreno-categoria">
+            <option value="Pruebas Oficiales">🎯 Pruebas Oficiales</option>
+            <option value="Fuerza / Tren Superior">💪 Fuerza / Tren Superior</option>
+            <option value="Pierna y Potencia">🦵 Pierna y Potencia</option>
+            <option value="Cardio y Resistencia">🏃 Cardio y Resistencia</option>
+          </select>
+          <input type="text" id="entreno-nombre" placeholder="Ej: Course Navette, Press Banca, Circuito...">
+          <input type="text" id="entreno-marca" placeholder="Series o Marca (Ej: 4x10 - 60kg / Palier 10.5)">
+          <button class="btn-red" onclick="agregarEjercicio()">Guardar</button>
+        </div>
       </div>
+
+      <!-- Barra de filtros y reinicio diario -->
+      <div class="workout-controls mt-large">
+        <div class="filter- pills">
+          <button class="pill-btn active" onclick="filtrarEntreno('Todas', this)">Todas</button>
+          <button class="pill-btn" onclick="filtrarEntreno('Pruebas Oficiales', this)">Pruebas Oficiales</button>
+          <button class="pill-btn" onclick="filtrarEntreno('Fuerza / Tren Superior', this)">Tren Superior</button>
+          <button class="pill-btn" onclick="filtrarEntreno('Pierna y Resistencia', this)">Pierna / Cardio</button>
+        </div>
+        <button class="btn-outline" onclick="reiniciarChecksEntreno()">Reiniciar día</button>
+      </div>
+
+      <!-- Contenedor donde aparecerán las tarjetas de ejercicios -->
+      <div id="contenedor-entreno" class="workout-grid mt-small"></div>
     </section>
 
     <!-- SECCIÓN 3: COMIDAS CON IA -->

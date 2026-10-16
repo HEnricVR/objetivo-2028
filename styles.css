@@ -252,3 +252,154 @@ input:focus {
     padding: 24px 16px;
   }
 }
+
+/* Estilos del Módulo de Entrenamiento */
+select {
+  padding: 12px 14px;
+  border: 1px solid var(--border-light);
+  border-radius: 6px;
+  font-size: 0.95rem;
+  background-color: var(--bg-card);
+  color: var(--text-dark);
+  outline: none;
+  cursor: pointer;
+}
+
+select:focus {
+  border-color: var(--accent-red);
+}
+
+.workout-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.pill-btn {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-light);
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  cursor: pointer;
+  margin-right: 6px;
+  transition: all 0.2s;
+}
+
+.pill-btn.active {
+  background-color: var(--text-dark);
+  color: white;
+  border-color: var(--text-dark);
+}
+
+.btn-outline {
+  background: transparent;
+  border: 1px solid var(--border-light);
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  color: var(--text-dark);
+}
+
+.btn-outline:hover {
+  border-color: var(--accent-red);
+  color: var(--accent-red);
+}
+
+.mt-small {
+  margin-top: 20px;
+}
+
+.workout-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 16px;
+}
+
+.workout-card {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-light);
+  border-radius: 10px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 14px;
+  transition: all 0.2s ease;
+}
+
+.workout-card.completed {
+  border-left: 4px solid var(--accent-red);
+  background-color: #FAFAFA;
+}
+
+.workout-card.completed h4 {
+  text-decoration: line-through;
+  color: var(--text-muted);
+}
+
+.workout-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.workout-header h4 {
+  font-size: 1.05rem;
+  margin-top: 4px;
+}
+
+.workout-mark {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--accent-red);
+  background-color: #FFF0F3;
+  padding: 8px 12px;
+  border-radius: 6px;
+  display: inline-block;
+}
+
+.workout-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid var(--border-light);
+  padding-top: 12px;
+}
+
+.check-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.check-label input[type="checkbox"] {
+  min-width: auto;
+  width: 18px;
+  height: 18px;
+  accent-color: var(--accent-red);
+  cursor: pointer;
+}
+
+.btn-small {
+  background: none;
+  border: none;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  cursor: pointer;
+  margin-left: 10px;
+  font-weight: 600;
+}
+
+.btn-small:hover {
+  color: var(--text-dark);
+}

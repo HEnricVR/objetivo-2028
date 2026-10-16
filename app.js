@@ -83,3 +83,121 @@ function borrarEvento(index) {
 // Iniciar todo al abrir la página
 actualizarContadores();
 mostrarEventos();
+
+// ==========================================
+// 4. MÓDULO DE ENTRENAMIENTO CONFIGURABLE
+// ==========================================
+
+let filtroActual = 'Todas';
+
+// Si es la primera vez que abres la app, cargamos 3 pruebas clave de ejemplo
+const ejerciciosPorDefecto = [
+  { categoria: 'Pruebas Oficiales', nombre: 'Course Navette (Resistencia)', marca: 'Objetivo: Palier 11', completado: false },
+  { categoria: 'Pruebas Oficiales', nombre: 'Circuito de Agilidad', marca: 'Objetivo: < 9.5 seg', completado: false },
+  { categoria: 'Fuerza / Tren Superior', nombre: 'Dominadas Estrictas', marca: '4 series x 10 reps', completado: false }
+];
+
+let misEjercicios = JSON.parse(localStorage.getItem('entrenoGuardado')) || ejerciciosPorDefecto;
+
+function guardarEntrenoLocal() {
+  localStorage.setItem('entrenoGuardado', JSON.stringify(misEjercicios));
+}
+
+function mostrarEntreno() {
+  const contenedor = document.getElementById('contenedor-entreno');
+  if (!contenedor) return;
+  contenedor.innerHTML = '';
+
+  misEjercicios.forEach((ej, index) => {
+    // Filtrar por categoría si no está en "Todas"
+    if (filtroActual !== 'Todas') {
+      if (filtroActual === 'Pierna y Resistencia' && (ej.categoria !== 'Pierna y Potencia' && ej.categoria !== 'Cardio y Resistencia')) {
+        return;
+      } else if (filtroActual !== 'Pierna y Resistencia' && ej.categoria !== filtroActual) {
+        return;
+      }
+    }
+
+    const card = document.createElement('div');
+    card.className = `workout-card ${ej.completado ? 'completed' : ''}`;
+    card.innerHTML = `
+      <div>
+        <div class="workout-header">
+          <div>
+            <span class="card-tag">${ej.categoria.toUpperCase()}</span>
+            <h4>${ej.nombre}</h4>
+          </div>
+        </div>
+        <div style="margin-top: 12px;">
+          <span class="workout-mark">${ej.marca}</span>
+        </div>
+      </div>
+      <div class="workout-actions">
+        <label class="check-label">
+          <input type="checkbox" ${ej.completado ? 'checked' : ''} onchange="alternarCompletado(${index})">
+          Hecho hoy
+        </label>
+        <div>
+          <button class="btn-small" onclick="editarMarca(${index})">Editar marca</button>
+          <button class="btn-delete" style="margin-left:10px; font-size:0.85rem;" onclick="borrarEjercicio(${index})">Borrar</button>
+        </div>
+      </div>
+    `;
+    contenedor.appendChild(card);
+  });
+}
+
+function agregarEjercicio() {
+  const categoria = document.getElementById('entreno-categoria').value;
+  const nombre = document.getElementById('entreno-nombre').value;
+  const marca = document.getElementById('entreno-marca').value;
+
+  if (!nombre || !marca) {
+    alert('Escribe el nombre del ejercicio y tu serie o marca.');
+    return;
+  }
+
+  misEjercicios.push({ categoria, nombre, marca, completado: false });
+  guardarEntrenoLocal();
+
+  document.getElementById('entreno-nombre').value = '';
+  document.getElementById('entreno-marca').value = '';
+  mostrarEntreno();
+}
+
+function alternarCompletado(index) {
+  misEjercicios[index].completado = !misEjercicios[index].completado;
+  guardarEntrenoLocal();
+  mostrarEntreno();
+}
+
+function editarMarca(index) {
+  const nuevaMarca = prompt(`Actualiza tu serie o marca para ${misEjercicios[index].nombre}:`, misEjercicios[index].marca);
+  if (nuevaMarca !== null && nuevaMarca.trim() !== '') {
+    misEjercicios[index].marca = nuevaMarca;
+    guardarEntrenoLocal();
+    mostrarEntreno();
+  }
+}
+
+function borrarEjercicio(index) {
+  misEjercicios.splice(index, 1);
+  guardarEntrenoLocal();
+  mostrarEntreno();
+}
+
+function filtrarEntreno(categoria, boton) {
+  filtroActual = categoria;
+  document.querySelectorAll('.pill-btn').forEach(btn => btn.classList.remove('active'));
+  boton.classList.add('active');
+  mostrarEntreno();
+}
+
+function reiniciarChecksEntreno() {
+  misEjercicios.forEach(ej => ej.completado = false);
+  guardarEntrenoLocal();
+  mostrarEntreno();
+}
+
+// Iniciar la lista de entrenamientos al cargar la página
+mostrarEntreno();
